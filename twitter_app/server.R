@@ -1,6 +1,6 @@
 library(shiny)
 library(rtweet)
-library(tidytext)
+#library(tidytext)
 library(tm)
 library(SnowballC)
 library(wordcloud)
