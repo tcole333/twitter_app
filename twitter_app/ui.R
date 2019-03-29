@@ -1,5 +1,5 @@
 library(shiny)
-#library(tidytext)
+library(leaflet)
 library(tm)
 library(SnowballC)
 library(wordcloud)
@@ -22,7 +22,8 @@ shinyUI(fluidPage(
     ),
     # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("distPlot")
+      plotOutput("distPlot"),
+      leafletOutput(outputId = 'tweet_map')
     )
   )
 ))

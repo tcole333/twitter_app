@@ -1,6 +1,6 @@
 library(shiny)
 library(twitteR)
-#library(tidytext)
+library(leaflet)
 library(tm)
 library(SnowballC)
 library(wordcloud)
@@ -28,7 +28,7 @@ shinyServer(function(input, output) {
   tweets_df <- reactive({
     #stop if nothing has been inputted
     req(input$hashtag)
-    tweets <- searchTwitter(input$hashtag, n = input$n_tweets, resultType = 'popular')
+    tweets <- searchTwitter(input$hashtag, n = input$n_tweets, resultType = 'recent')
     tweets <- try(twListToDF(tweets), silent = TRUE)
   })
   
@@ -58,6 +58,20 @@ shinyServer(function(input, output) {
                 max.words = 200, random.order = FALSE, rot.per = 0.35,
                 colors = brewer.pal(8, 'Dark2'), scale=c(4, 0.5))
     }
+    
+  })
+  #create the map
+  output$tweet_map <- renderLeaflet({
+    print(tweets_df()$longitude)
+    map <- leaflet() %>% 
+      addTiles() %>%
+      addCircles(lng = as.numeric(tweets_df()$longitude), 
+                 lat = as.numeric(tweets_df()$latitude),
+                 weight = 8, 
+                 radius = 40, 
+                 color = "#fb3004", 
+                 stroke = TRUE, 
+                 fillOpacity = 0.8)
     
   })
   
