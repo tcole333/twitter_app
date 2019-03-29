@@ -1,5 +1,5 @@
 library(shiny)
-library(rtweet)
+library(twitteR)
 #library(tidytext)
 library(tm)
 library(SnowballC)
@@ -7,21 +7,10 @@ library(wordcloud)
 library(RColorBrewer)
 library(httr)
 
-createTokenNoBrowser<- function(appName, consumerKey, consumerSecret, 
-                                accessToken, accessTokenSecret) {
-  app <- httr::oauth_app(appName, consumerKey, consumerSecret)
-  params <- list(as_header = TRUE)
-  credentials <- list(oauth_token = accessToken, 
-                      oauth_token_secret = accessTokenSecret)
-  token <- httr::Token1.0$new(endpoint = NULL, params = params, 
-                              app = app, credentials = credentials)
-  return(token)
-}
-token1 <- createTokenNoBrowser('Travis Cole',
-                              'sVVmrSupCidOO2VHJZm6NsBvf',
-                              'hGcKP7jV0npTSTwTu4G2XjgrL6zAfHn1usvhS0fmm3ZXoq8jNy',
-                              '318139041-RWZzSAi461Dr2FNkyQ2jO4zjg0vCQP5s9LELdJNZ',
-                              'yx95n9Yjy1Z3AIB0TrfJ4qUkoimFigMjYyhIYFhL44GCk')
+setup_twitter_oauth('sVVmrSupCidOO2VHJZm6NsBvf',
+                    'hGcKP7jV0npTSTwTu4G2XjgrL6zAfHn1usvhS0fmm3ZXoq8jNy',
+                    '318139041-RWZzSAi461Dr2FNkyQ2jO4zjg0vCQP5s9LELdJNZ',
+                    'yx95n9Yjy1Z3AIB0TrfJ4qUkoimFigMjYyhIYFhL44GCk')
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
@@ -36,13 +25,15 @@ shinyServer(function(input, output) {
   
   #need to make the number of tweets a variable as well
   tweets_df <- reactive({
-    search_tweets(q = input$hashtag, n = input$n_tweets, include_rts = FALSE, token = token1)
+    tweets <- searchTwitter(input$hashtag, n = input$n_tweets, resultType = 'popular')
+    tweets <- twListToDF(tweets)
+    
   })
   
   #create the plot
   output$distPlot <- renderPlot({
-    tweet <- tweets_df()
-    tweet_corpus <- Corpus(VectorSource(tweet$text))
+    tweet <- enc2native(tweets_df()$text)
+    tweet_corpus <- Corpus(VectorSource(tweet))
     tweet_text <- tm_map(tweet_corpus, content_transformer(tolower))
     tweet_text <- tm_map(tweet_corpus, removeWords, stopwords("english"))
     tweet_text <- tm_map(tweet_corpus, removePunctuation)

@@ -1,5 +1,4 @@
 library(shiny)
-library(rtweet)
 #library(tidytext)
 library(tm)
 library(SnowballC)
