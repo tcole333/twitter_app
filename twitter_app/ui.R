@@ -15,8 +15,8 @@ shinyUI(fluidPage(
   sidebarLayout(
     sidebarPanel(
       textInput("hashtag",
-                "Hashtag",
-                value = "Enter hashtag or word to search:"),
+                "Enter hashtag or word to search:",
+                value = ""),
       
       sliderInput("n_tweets", 'Number of tweets', value = 500, min = 0, max = 1000, step = 100)
     ),
