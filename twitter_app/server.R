@@ -35,12 +35,12 @@ shinyServer(function(input, output) {
     tweet <- enc2native(tweets_df()$text)
     tweet_corpus <- Corpus(VectorSource(tweet))
     tweet_text <- tm_map(tweet_corpus, content_transformer(tolower))
-    tweet_text <- tm_map(tweet_corpus, removeWords, stopwords("english"))
-    tweet_text <- tm_map(tweet_corpus, removePunctuation)
-    tweet_text <- tm_map(tweet_corpus, stripWhitespace)
+    tweet_text <- tm_map(tweet_text, removeWords, stopwords("english"))
+    tweet_text <- tm_map(tweet_text, removePunctuation)
+    tweet_text <- tm_map(tweet_text, stripWhitespace)
     
     #build a matrix of the terms in the tweets
-    ttm <- TermDocumentMatrix(tweet_corpus)
+    ttm <- TermDocumentMatrix(tweet_text)
     tweet_matrix <- as.matrix(ttm)
     words <- sort(rowSums(tweet_matrix), decreasing = TRUE)
     term_df <- data.frame(word = names(words), freq=words)
