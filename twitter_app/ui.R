@@ -6,7 +6,7 @@ library(wordcloud)
 library(RColorBrewer)
 
 # Define UI for application that draws a histogram
-shinyUI(fluidPage(
+shinyUI(fluidPage(theme = 'bootstrap.min.css',
   
   # Application title
   titlePanel("Twitter Data Visualizations"),
