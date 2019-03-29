@@ -43,7 +43,7 @@ shinyServer(function(input, output) {
     
     tweet_text <- tm_map(tweet_corpus, content_transformer(tolower))
     #need to remove words passed in as the search term still
-    tweet_text <- tm_map(tweet_text, removeWords, stopwords("english"))
+    tweet_text <- tm_map(tweet_text, removeWords, c(stopwords("english"), input$hashtag))
     tweet_text <- tm_map(tweet_text, removePunctuation)
     tweet_text <- tm_map(tweet_text, stripWhitespace)
   
@@ -52,11 +52,10 @@ shinyServer(function(input, output) {
     tweet_matrix <- as.matrix(ttm)
     words <- sort(rowSums(tweet_matrix), decreasing = TRUE)
     term_df <- data.frame(word = names(words), freq=words)
-    print(term_df[term_df$word == input$hashtag])
     #make the wordcloud when data has loaded into the dataframe
     if (nrow(term_df) > 0) {
       wordcloud(words = term_df$word, freq = term_df$freq, min.freq = 1,
-                max.words = 300, random.order = FALSE, rot.per = 0.25,
+                max.words = 200, random.order = FALSE, rot.per = 0.35,
                 colors = brewer.pal(8, 'Dark2'))
     }
     
