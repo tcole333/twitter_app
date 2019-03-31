@@ -62,7 +62,6 @@ shinyServer(function(input, output) {
   })
   #create the map
   output$tweet_map <- renderLeaflet({
-    print(tweets_df()$longitude)
     map <- leaflet() %>% 
       addTiles() %>%
       addCircles(lng = as.numeric(tweets_df()$longitude), 
