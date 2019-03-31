@@ -7,7 +7,7 @@ library(RColorBrewer)
 library(shinythemes)
 
 # Define UI for application that draws a histogram
-shinyUI(fluidPage(theme = shinytheme('cerulean'),
+shinyUI(fluidPage(theme = shinytheme('flatly'),
   
   # Application title
   titlePanel("Visualizing Twitter Data"),
