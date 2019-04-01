@@ -34,7 +34,7 @@ shinyUI(fluidPage(theme = shinytheme('flatly'),
                       div(style = "font-size:20px;",
                           'Where are they saying it?')
                       , align = 'center')),
-      fluidRow(column(10, '(If no data loads for the map try increasing the number of tweets searched or a new term)', align = 'center')),
+      fluidRow(column(10, '(If no data loads for the map try increasing the number of tweets searched or try a new term)', align = 'center')),
       fluidRow(column(10, align = 'center', leafletOutput(outputId = 'tweet_map')))
     )
   )
