@@ -6,9 +6,10 @@ library(wordcloud)
 library(RColorBrewer)
 library(shinythemes)
 
+
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(theme = shinytheme('flatly'),
-  
+
   # Application title
   titlePanel("Visualizing Twitter Data"),
   
@@ -24,8 +25,17 @@ shinyUI(fluidPage(theme = shinytheme('flatly'),
     ),
     # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("distPlot"),
-      leafletOutput(outputId = 'tweet_map')
+      fluidRow(column(10, 
+                      div(style = "font-size:20px;",
+                              'What are people saying?')
+                      , align = 'center')),
+      fluidRow(plotOutput("distPlot")),
+      fluidRow(column(10, 
+                      div(style = "font-size:20px;",
+                          'Where are they saying it?')
+                      , align = 'center')),
+      fluidRow(column(10, '(If no data loads for the map try increasing the number of tweets searched or a new term)', align = 'center')),
+      fluidRow(leafletOutput(outputId = 'tweet_map'))
     )
   )
 ))
